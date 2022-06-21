@@ -14,7 +14,7 @@ The Terraform code will do the following steps
 
 # Diagram
 
-![](diagram/diagram-airgap.png)  
+![](diagram/diagram_external.png)  
 
 # Prerequisites
 
@@ -55,17 +55,17 @@ export AWS_SESSION_TOKEN=
 - Store the files needed for the TFE online installation under the `./files` directory, See the notes [here](./files/README.md)
 - create a file called `variables.auto.tfvars` with the following contents and your own values
 ```
-tag_prefix               = "patrick-tfe"
-region                   = "eu-north-1"
-vpc_cidr                 = "10.234.0.0/16"
-ami                      = "ami-09f0506c9ef0fb473"
-rds_password             = "Password#1"
-filename_license         = "license.rli"
-dns_hostname             = "patrick-tfe3"
-dns_zonename             = "bg.hashicorp-success.com"
-tfe_password             = "Password#1"
-certificate_email        = "patrick.munne@hashicorp.com"
-public_key               = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCX6Lfd55bPSMPJJvHoF4+3iGNLuJ1gz3Ov9uVnsWFCy6rcFk8IDhjFGRoTylXyJVns6CpFxonKZ2tcKFkSK3601sztrbJNzlgpJg/WoX7wbTy3SgLVhK8xpYBCh/LfX6UvofVBO1OVo2lkv2mFNgn5S3q9dKqUc32bRvWaoPqeuSUghvDsB9SxMr1Ih5Qg3IWYk587dCkVMrL3KMiN361qEkGcfu3kkpcQnpAO00alXJ2WksvQbut3w1vP2/osuoavA6Z22WjzicPIqwV1yQfNjdxj+XjZ1Re3TQ4kwA1h5AAsYko4LyIUjP1ZiBTTej9k2Yodl+VO2a1AypPrLcdN"
+tag_prefix               = "patrick-tfe"                        # TAG prefix for names to easily find your AWS resources
+region                   = "eu-north-1"                         # Region to create the environment
+vpc_cidr                 = "10.234.0.0/16"                      # subnet mask that can be used 
+ami                      = "ami-09f0506c9ef0fb473"              # AMI of the Ubuntu image  
+rds_password             = "Password#1"                         # password used for the RDS environment
+filename_license         = "license.rli"                        # filename of your TFE license stored under ./files
+dns_hostname             = "patrick-tfe3"                       # DNS hostname for the TFE
+dns_zonename             = "bg.hashicorp-success.com"           # DNS zone name to be used
+tfe_password             = "Password#1"                         # TFE password for the dashboard and encryption of the data
+certificate_email        = "patrick.munne@hashicorp.com"        # Your email address used by TLS certificate registration
+public_key               = "ssh-rsa AAAAB3Nz"                   # The public key for you to connect to the server over SSH
 ```
 - Terraform initialize
 ```

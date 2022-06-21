@@ -8,7 +8,7 @@ from diagrams.aws.database import RDSPostgresqlInstance
 # Variables
 title = "VPC with 1 public subnet for the TFE server and\n 2 private subnet in different AZ for the PostgreSQL instance requirement."
 outformat = "png"
-filename = "diagram-airgap"
+filename = "diagram_external"
 direction = "TB"
 
 
@@ -24,7 +24,7 @@ with Diagram(
     # Cluster 
     with Cluster("aws"):
         bucket_tfe = SimpleStorageServiceS3Bucket("TFE bucket")
-        bucket_files = SimpleStorageServiceS3Bucket("TFE airgap files")
+        bucket_files = SimpleStorageServiceS3Bucket("TFE files")
         with Cluster("vpc"):
             igw_gateway = InternetGateway("igw")
     
