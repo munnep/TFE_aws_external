@@ -95,7 +95,6 @@ tfe_dashboard = "https://patrick-tfe3.bg.hashicorp-success.com:8800"
 - Click on the open button to create your organization and workspaces
 
 # TODO
-- [ ] install TFE
 
 # DONE
 - [x] Create an AWS RDS PostgreSQL
@@ -114,5 +113,6 @@ tfe_dashboard = "https://patrick-tfe3.bg.hashicorp-success.com:8800"
 - [x] point dns name to public ip address
 - [x] build network according to the diagram
 - [x] test it manually
+- [x] install TFE
 
 
