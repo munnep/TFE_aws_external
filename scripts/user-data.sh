@@ -160,4 +160,6 @@ cat > /etc/replicated.conf <<EOF
 }
 EOF
 
-# sudo bash ./install.sh airgap private-address=${tfe-private-ip}
+pushd /var/tmp
+curl -o install.sh https://install.terraform.io/ptfe/stable
+bash ./install.sh no-proxy private-address=${tfe-private-ip} public-address=${tfe-private-ip}
