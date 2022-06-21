@@ -141,8 +141,9 @@ license.rli                                                                     
 
 - start the installer
 ```
+cd /tmp
 curl -o install.sh https://install.terraform.io/ptfe/stable
-bash ./install.sh no-proxy private-address=10.234.1.22 public-address=16.170.190.77
+bash ./install.sh no-proxy private-address=10.234.1.22 public-address=13.51.23.34
 ```
 after 2 minutes you should see the following
 ```
