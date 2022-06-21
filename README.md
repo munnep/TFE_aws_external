@@ -1,4 +1,4 @@
-# Terraform Enterprise online installation with External Services (S3 + PostgreSQL) an valid certificates
+# Terraform Enterprise online installation with External Services (S3 + PostgreSQL) and valid certificates
 
 With this repository you will be able to do a TFE (Terraform Enterprise) online installation on AWS with external services for storage in the form of S3 and PostgreSQL and a valid certificate. 
 
