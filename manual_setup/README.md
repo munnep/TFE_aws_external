@@ -5,7 +5,7 @@ This document describes the manual steps to install TFE in AWS with a public IP 
 ## Network
 
 We create a network according to the following diagram
-![](diagram/diagram-airgap.png)  
+![](diagram/diagram-.png)  
 
 
 - Create a VPC with cidr block 10.233.0.0/16  
@@ -214,7 +214,7 @@ Save settings
 - [x] Create an AWS RDS PostgreSQL
 - [x] Create an AWS bucket
 - [x] Create a valid certificate to use 
-- [x] Get an Airgap software download
+- [x] Get an  software download
 - [ ] create an elastic IP to attach to the instance
 - [x] create a virtual machine in a public network with public IP address.
     - [x] firewall inbound are all from user building external ip
@@ -223,7 +223,7 @@ Save settings
           AWS bucket
           user building external ip
 - [x] transfer files to TFE virtual machine
-      - airgap software
+      -  software
       - license
       - TLS certificates
       - Download the installer bootstrapper
