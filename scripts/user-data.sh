@@ -160,6 +160,9 @@ cat > /etc/replicated.conf <<EOF
 }
 EOF
 
+# Get the public IP of the instance
+PUBLIC_IP=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
+
 pushd /var/tmp
 curl -o install.sh https://install.terraform.io/ptfe/stable
-bash ./install.sh no-proxy private-address=${tfe-private-ip} public-address=${tfe-private-ip}
+bash ./install.sh no-proxy private-address=${tfe-private-ip} public-address=$PUBLIC_IP
