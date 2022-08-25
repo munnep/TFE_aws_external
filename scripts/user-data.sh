@@ -163,4 +163,12 @@ PUBLIC_IP=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
 
 pushd /var/tmp
 curl -o install.sh https://install.terraform.io/ptfe/stable
-bash ./install.sh no-proxy private-address=${tfe-private-ip} public-address=$PUBLIC_IP
+
+
+if [ "${tfe_release_sequence}" ] ; then
+  bash ./install.sh release-sequence=${tfe_release_sequence} no-proxy private-address=${tfe-private-ip} public-address=$PUBLIC_IP
+else
+  bash ./install.sh no-proxy private-address=${tfe-private-ip} public-address=$PUBLIC_IP
+fi
+
+replicatedctl params set ReleaseSequence --value '0'

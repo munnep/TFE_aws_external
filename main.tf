@@ -131,6 +131,7 @@ resource "aws_security_group" "default-sg" {
 
 resource "aws_s3_bucket" "tfe-bucket" {
   bucket = "${var.tag_prefix}-bucket"
+  force_destroy = true
 
   tags = {
     Name = "${var.tag_prefix}-bucket"
@@ -139,6 +140,7 @@ resource "aws_s3_bucket" "tfe-bucket" {
 
 resource "aws_s3_bucket" "tfe-bucket-software" {
   bucket = "${var.tag_prefix}-software"
+  force_destroy = true
 
   tags = {
     Name = "${var.tag_prefix}-software"
@@ -353,6 +355,7 @@ resource "aws_instance" "tfe_server" {
     rds_password       = var.rds_password
     tfe_bucket         = "${var.tag_prefix}-bucket"
     region             = var.region
+    tfe_release_sequence = var.tfe_release_sequence
   })
 
   tags = {
