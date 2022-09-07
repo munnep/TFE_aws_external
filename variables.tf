@@ -42,3 +42,7 @@ variable "dns_zonename" {
 variable "certificate_email" {
   description = "email address to register the certificate"
 }
+
+variable "tfe_release_sequence" {
+  description = "the TFE release sequence you want to install"
+}

@@ -5,7 +5,7 @@ data "http" "myip" {
 # data.http.myip.body
 
 locals {
-  mypublicip = data.http.myip.body
+  mypublicip = data.http.myip.response_body
 }
 
 resource "aws_vpc" "main" {
@@ -131,6 +131,7 @@ resource "aws_security_group" "default-sg" {
 
 resource "aws_s3_bucket" "tfe-bucket" {
   bucket = "${var.tag_prefix}-bucket"
+  force_destroy = true
 
   tags = {
     Name = "${var.tag_prefix}-bucket"
@@ -139,6 +140,7 @@ resource "aws_s3_bucket" "tfe-bucket" {
 
 resource "aws_s3_bucket" "tfe-bucket-software" {
   bucket = "${var.tag_prefix}-software"
+  force_destroy = true
 
   tags = {
     Name = "${var.tag_prefix}-software"
@@ -348,11 +350,12 @@ resource "aws_instance" "tfe_server" {
     tfe-private-ip     = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 22)
     tfe_password       = var.tfe_password
     dns_zonename       = var.dns_zonename
-    pg_dbname          = aws_db_instance.default.name
+    pg_dbname          = aws_db_instance.default.db_name
     pg_address         = aws_db_instance.default.address
     rds_password       = var.rds_password
     tfe_bucket         = "${var.tag_prefix}-bucket"
     region             = var.region
+    tfe_release_sequence = var.tfe_release_sequence
   })
 
   tags = {
