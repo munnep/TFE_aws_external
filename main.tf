@@ -337,9 +337,9 @@ resource "aws_instance" "tfe_server" {
 
   root_block_device {
     volume_size = 50
-
+    volume_type = "io1"
+    iops        = 1000
   }
-
 
   iam_instance_profile = aws_iam_instance_profile.profile.name
 
