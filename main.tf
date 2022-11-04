@@ -1,5 +1,5 @@
 data "http" "myip" {
-  url = "https://api.ipify.org"
+  url = "https://ipinfo.io/ip"
 }
 
 # data.http.myip.body
@@ -337,7 +337,8 @@ resource "aws_instance" "tfe_server" {
 
   root_block_device {
     volume_size = 50
-
+    volume_type = "io1"
+    iops        = 1000
   }
 
 
@@ -391,7 +392,7 @@ resource "aws_db_subnet_group" "default" {
 resource "aws_db_instance" "default" {
   allocated_storage      = 10
   engine                 = "postgres"
-  engine_version         = "12"
+  engine_version         = "12.8"
   instance_class         = "db.t3.large"
   username               = "postgres"
   password               = var.rds_password
@@ -402,6 +403,7 @@ resource "aws_db_instance" "default" {
   vpc_security_group_ids = [aws_security_group.default-sg.id]
   db_subnet_group_name   = aws_db_subnet_group.default.name
   identifier             = "${var.tag_prefix}-rds"
+  allow_major_version_upgrade = true
   tags = {
     "Name" = var.tag_prefix
   }
