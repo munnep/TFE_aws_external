@@ -373,9 +373,8 @@ resource "aws_instance" "tfe_server" {
   ]
 
   metadata_options {
-    http_endpoint = "enabled"
+    http_endpoint               = "enabled"
     http_put_response_hop_limit = 2
-
   }
 }
 
