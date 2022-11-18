@@ -130,7 +130,7 @@ resource "aws_security_group" "default-sg" {
 }
 
 resource "aws_s3_bucket" "tfe-bucket" {
-  bucket = "${var.tag_prefix}-bucket"
+  bucket        = "${var.tag_prefix}-bucket"
   force_destroy = true
 
   tags = {
@@ -139,7 +139,7 @@ resource "aws_s3_bucket" "tfe-bucket" {
 }
 
 resource "aws_s3_bucket" "tfe-bucket-software" {
-  bucket = "${var.tag_prefix}-software"
+  bucket        = "${var.tag_prefix}-software"
   force_destroy = true
 
   tags = {
@@ -215,6 +215,12 @@ resource "aws_iam_role_policy" "policy" {
         "Sid" : "VisualEditor1",
         "Effect" : "Allow",
         "Action" : "s3:ListAllMyBuckets",
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "VisualEditor2",
+        "Effect" : "Allow",
+        "Action" : "pricing:*",
         "Resource" : "*"
       }
     ]
@@ -344,17 +350,17 @@ resource "aws_instance" "tfe_server" {
   iam_instance_profile = aws_iam_instance_profile.profile.name
 
   user_data = templatefile("${path.module}/scripts/user-data.sh", {
-    tag_prefix         = var.tag_prefix
-    filename_license   = var.filename_license
-    dns_hostname       = var.dns_hostname
-    tfe-private-ip     = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 22)
-    tfe_password       = var.tfe_password
-    dns_zonename       = var.dns_zonename
-    pg_dbname          = aws_db_instance.default.db_name
-    pg_address         = aws_db_instance.default.address
-    rds_password       = var.rds_password
-    tfe_bucket         = "${var.tag_prefix}-bucket"
-    region             = var.region
+    tag_prefix           = var.tag_prefix
+    filename_license     = var.filename_license
+    dns_hostname         = var.dns_hostname
+    tfe-private-ip       = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 22)
+    tfe_password         = var.tfe_password
+    dns_zonename         = var.dns_zonename
+    pg_dbname            = aws_db_instance.default.db_name
+    pg_address           = aws_db_instance.default.address
+    rds_password         = var.rds_password
+    tfe_bucket           = "${var.tag_prefix}-bucket"
+    region               = var.region
     tfe_release_sequence = var.tfe_release_sequence
   })
 
@@ -365,6 +371,11 @@ resource "aws_instance" "tfe_server" {
   depends_on = [
     aws_network_interface_sg_attachment.sg_attachment, aws_db_instance.default
   ]
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 2
+  }
 }
 
 resource "aws_volume_attachment" "ebs_att_tfe_swap" {
@@ -389,19 +400,19 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_db_instance" "default" {
-  allocated_storage      = 10
-  engine                 = "postgres"
-  engine_version         = "12.8"
-  instance_class         = "db.t3.large"
-  username               = "postgres"
-  password               = var.rds_password
-  parameter_group_name   = "default.postgres12"
-  skip_final_snapshot    = true
-  db_name                = "tfe"
-  publicly_accessible    = false
-  vpc_security_group_ids = [aws_security_group.default-sg.id]
-  db_subnet_group_name   = aws_db_subnet_group.default.name
-  identifier             = "${var.tag_prefix}-rds"
+  allocated_storage           = 10
+  engine                      = "postgres"
+  engine_version              = "12.8"
+  instance_class              = "db.t3.large"
+  username                    = "postgres"
+  password                    = var.rds_password
+  parameter_group_name        = "default.postgres12"
+  skip_final_snapshot         = true
+  db_name                     = "tfe"
+  publicly_accessible         = false
+  vpc_security_group_ids      = [aws_security_group.default-sg.id]
+  db_subnet_group_name        = aws_db_subnet_group.default.name
+  identifier                  = "${var.tag_prefix}-rds"
   allow_major_version_upgrade = true
   tags = {
     "Name" = var.tag_prefix
