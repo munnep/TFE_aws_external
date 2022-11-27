@@ -75,10 +75,8 @@ s3-pit-restore -b patrick-tfe3-bucket -B patrick-tfe3-bucket -t "11-27-2022 14:4
 ```
 terraform apply -replace=aws_ebs_volume.tfe_docker -replace=aws_ebs_volume.tfe_swap -replace=aws_instance.tfe_server
 ```
-- When the TFE instance is back up and running you should see it is using the new RDS environment. 
-```
-
-```
+- When the TFE instance is back up and running you should see it is using the new RDS environment in the TFE dashboard -> settings  
+![](media/20221127151658.png)    
 
 
 
