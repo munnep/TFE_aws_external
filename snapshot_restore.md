@@ -51,7 +51,7 @@ terraform apply
 ```
 make changes in your TFE application
 ```
-- Restore the snapshot by adding the folling value to your `variable.auto.tfvars`
+- Restore the snapshot by adding the following value to your `variable.auto.tfvars`
 ```
 rds_snapshot_to_restore = "before-upgrade"
 ```
@@ -59,7 +59,7 @@ rds_snapshot_to_restore = "before-upgrade"
 ```
 terraform apply
 ```
-- You know have a running PostgreSQL environment restored. You need to restore the S3 bucket to the same point in time. The output shows the example code for the `s3-pit-restore` command
+- You now have a running PostgreSQL environment restored. You need to restore the S3 bucket to the same point in time. The output shows the example code for the `s3-pit-restore` command
 ```
 Apply complete! Resources: 1 added, 1 changed, 0 destroyed.
 
