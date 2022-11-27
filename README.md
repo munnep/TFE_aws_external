@@ -12,6 +12,10 @@ The Terraform code will do the following steps
 - create roles/profiles for the TFE instance to access S3 buckets
 - Create a EC2 instance on which the TFE online installation will be performed
 
+## Restore TFE environment
+
+To test the restore of a TFE environment use the following README [here](snapshot_restore.md)
+
 # Diagram
 
 ![](diagram/diagram_external.png)  

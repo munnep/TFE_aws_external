@@ -138,6 +138,13 @@ resource "aws_s3_bucket" "tfe-bucket" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "tfe-bucket-versioning" {
+  bucket = aws_s3_bucket.tfe-bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_s3_bucket" "tfe-bucket-software" {
   bucket        = "${var.tag_prefix}-software"
   force_destroy = true
@@ -356,8 +363,8 @@ resource "aws_instance" "tfe_server" {
     tfe-private-ip       = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 22)
     tfe_password         = var.tfe_password
     dns_zonename         = var.dns_zonename
-    pg_dbname            = aws_db_instance.default.db_name
-    pg_address           = aws_db_instance.default.address
+    pg_dbname            = var.rds_snapshot_to_restore == null ? aws_db_instance.default.db_name : aws_db_instance.restore[0].db_name
+    pg_address           = var.rds_snapshot_to_restore == null ? aws_db_instance.default.address : aws_db_instance.restore[0].address
     rds_password         = var.rds_password
     tfe_bucket           = "${var.tag_prefix}-bucket"
     region               = var.region
@@ -422,3 +429,4 @@ resource "aws_db_instance" "default" {
     aws_s3_object.certificate_artifacts_s3_objects
   ]
 }
+

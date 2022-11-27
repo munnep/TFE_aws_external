@@ -46,3 +46,16 @@ variable "certificate_email" {
 variable "tfe_release_sequence" {
   description = "the TFE release sequence you want to install"
 }
+
+variable "rds_snapshots" {
+  type        = list(any)
+  description = "List of snapshots to create for the RDS environment"
+  default = []
+}
+
+
+variable "rds_snapshot_to_restore" {
+  type        = string
+  description = "RDS snapshot to restore to be used by TFE"
+  default = null
+}

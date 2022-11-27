@@ -13,3 +13,7 @@ output "tfe_appplication" {
 output "ssh_tfe_server_ip" {
   value = "ssh ubuntu@${aws_eip.tfe-eip.public_ip}"
 }
+
+output "restore_s3_bucket_to_rds_snapshot" {
+  value = local.s3_bucket_restore_time
+}
