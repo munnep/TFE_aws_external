@@ -59,3 +59,7 @@ variable "rds_snapshot_to_restore" {
   description = "RDS snapshot to restore to be used by TFE"
   default = null
 }
+
+variable "terraform_client_version" {
+  description = "Terraform client installed on the terraform client machine"
+}

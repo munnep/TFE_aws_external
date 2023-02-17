@@ -356,7 +356,7 @@ resource "aws_instance" "tfe_server" {
 
   iam_instance_profile = aws_iam_instance_profile.profile.name
 
-  user_data = templatefile("${path.module}/scripts/user-data.sh", {
+  user_data = templatefile("${path.module}/scripts/cloudinit_tfe_server.yaml", {
     tag_prefix           = var.tag_prefix
     filename_license     = var.filename_license
     dns_hostname         = var.dns_hostname
@@ -369,6 +369,8 @@ resource "aws_instance" "tfe_server" {
     tfe_bucket           = "${var.tag_prefix}-bucket"
     region               = var.region
     tfe_release_sequence = var.tfe_release_sequence
+    certificate_email    = var.certificate_email
+    tfe_client_ip        = flatten(aws_network_interface.terraform_client-priv.private_ips)[0]
   })
 
   tags = {
@@ -376,7 +378,7 @@ resource "aws_instance" "tfe_server" {
   }
 
   depends_on = [
-    aws_network_interface_sg_attachment.sg_attachment, aws_db_instance.default
+    aws_network_interface_sg_attachment.sg_attachment, aws_db_instance.default, aws_network_interface.terraform_client-priv
   ]
 
   metadata_options {
