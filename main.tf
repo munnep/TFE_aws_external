@@ -133,9 +133,12 @@ resource "aws_s3_bucket" "tfe-bucket" {
   bucket        = "${var.tag_prefix}-bucket"
   force_destroy = true
 
-  tags = {
-    Name = "${var.tag_prefix}-bucket"
-  }
+  tags = merge(
+    local.tags,
+    {
+      Name = "${var.tag_prefix}-bucket"
+    }
+  )
 }
 
 resource "aws_s3_bucket_versioning" "tfe-bucket-versioning" {
@@ -149,9 +152,12 @@ resource "aws_s3_bucket" "tfe-bucket-software" {
   bucket        = "${var.tag_prefix}-software"
   force_destroy = true
 
-  tags = {
-    Name = "${var.tag_prefix}-software"
-  }
+  tags = merge(
+    local.tags,
+    {
+      Name = "${var.tag_prefix}-software"
+    }
+  )
 }
 
 
@@ -166,10 +172,11 @@ resource "aws_s3_object" "object_license" {
 
 }
 
-resource "aws_s3_bucket_acl" "tfe-bucket" {
-  bucket = aws_s3_bucket.tfe-bucket.id
-  acl    = "private"
-}
+# not needed anymore because of the tag OwnedBy on the bucket itself
+# resource "aws_s3_bucket_acl" "tfe-bucket" {
+#   bucket = aws_s3_bucket.tfe-bucket.id
+#   acl    = "private"
+# }
 
 resource "aws_iam_role" "role" {
   name = "${var.tag_prefix}-role"
