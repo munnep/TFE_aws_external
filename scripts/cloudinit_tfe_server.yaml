@@ -249,4 +249,3 @@ runcmd:
   - sudo bash /var/tmp/install_software.sh 
   - sudo bash /var/tmp/download_and_unpack_software.sh 
   - sudo bash /var/tmp/install_tfe.sh 
-  - sudo bash /var/tmp/tfe_setup.sh 
