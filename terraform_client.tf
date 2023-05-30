@@ -26,7 +26,7 @@ resource "aws_route53_record" "www-client" {
 
 
 resource "aws_eip" "terraform_client-eip" {
-  vpc = true
+  domain   = "vpc"
 
   instance                  = aws_instance.terraform_client.id
   associate_with_private_ip = aws_network_interface.terraform_client-priv.private_ip

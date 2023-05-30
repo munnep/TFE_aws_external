@@ -309,7 +309,7 @@ resource "aws_network_interface_sg_attachment" "sg_attachment" {
 }
 
 resource "aws_eip" "tfe-eip" {
-  vpc = true
+  domain   = "vpc"
 
   instance                  = aws_instance.tfe_server.id
   associate_with_private_ip = aws_network_interface.tfe-priv.private_ip
@@ -418,7 +418,7 @@ resource "aws_db_subnet_group" "default" {
 resource "aws_db_instance" "default" {
   allocated_storage           = 10
   engine                      = "postgres"
-  engine_version              = "12.8"
+  engine_version              = "12.11"
   instance_class              = "db.t3.large"
   username                    = "postgres"
   password                    = var.rds_password
