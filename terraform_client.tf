@@ -37,6 +37,22 @@ resource "aws_eip" "terraform_client-eip" {
   }
 }
 
+resource "acme_certificate" "certificate-client" {
+  account_key_pem = acme_registration.registration.account_key_pem
+  common_name     = "${var.dns_hostname}-client.${var.dns_zonename}"
+
+  dns_challenge {
+    provider = "route53"
+
+    config = {
+      AWS_HOSTED_ZONE_ID = data.aws_route53_zone.base_domain.zone_id
+    }
+  }
+
+  depends_on = [acme_registration.registration]
+}
+
+
 resource "aws_instance" "terraform_client" {
   ami           = var.ami
   instance_type = "t3.small"
@@ -52,7 +68,10 @@ resource "aws_instance" "terraform_client" {
   user_data = templatefile("${path.module}/scripts/cloudinit_tfe_client.yaml", {
     terraform_client_version = var.terraform_client_version
     rsyslog_conf             = filebase64("${path.module}/files/rsyslog.conf")
-    rsyslog_conf2            = file("${path.module}/files/rsyslog.conf")
+    dns_hostname         = var.dns_hostname
+    dns_zonename         = var.dns_zonename
+    server_cert         = base64encode("${acme_certificate.certificate-client.certificate_pem}${acme_certificate.certificate-client.issuer_pem}")
+    server_key         = base64encode(acme_certificate.certificate-client.private_key_pem)
   })
 
   tags = {
@@ -60,9 +79,11 @@ resource "aws_instance" "terraform_client" {
   }
 
   depends_on = [
-    aws_network_interface_sg_attachment.sg2_attachment
+    aws_network_interface_sg_attachment.sg2_attachment, acme_certificate.certificate-client
   ]
+  
 }
+
 
 
 

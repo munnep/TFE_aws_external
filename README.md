@@ -17,6 +17,10 @@ The Terraform code will do the following steps
 
 To test the restore of a TFE environment use the following README [here](snapshot_restore.md)
 
+## Test Terraform mirroring
+
+To test terraform mirroring use the following README [here](network_mirror.md)
+
 # Diagram
 
 ![](diagram/diagram_external.png)  

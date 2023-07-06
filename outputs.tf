@@ -21,3 +21,8 @@ output "restore_s3_bucket_to_rds_snapshot" {
 output "ssh_tf_client" {
   value = "ssh ubuntu@${var.dns_hostname}-client.${var.dns_zonename}"
 }
+
+
+output "client_web_server" {
+  value = "https://${var.dns_hostname}-client.${var.dns_zonename}"
+}
