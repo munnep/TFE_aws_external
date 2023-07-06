@@ -85,6 +85,14 @@ resource "aws_security_group" "default-sg" {
   }
 
   ingress {
+    description = "http from private ip"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["${local.mypublicip}/32", "0.0.0.0/0"]
+  }
+
+  ingress {
     description = "netdata listening"
     from_port   = 19999
     to_port     = 19999
