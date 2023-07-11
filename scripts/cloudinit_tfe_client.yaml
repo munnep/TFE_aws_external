@@ -102,17 +102,17 @@ write_files:
       # Download the MacOS provider to default nginx hosting location
       terraform providers mirror -platform=darwin_amd64 /var/www/html/
 runcmd:
-  - curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=kikitux bash
-  - curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=munnep bash
   - export DEBIAN_FRONTEND=noninteractive
   - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
   - apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
   - apt-get update -y
   - apt-get install -y terraform=${terraform_client_version}
-  - apt-get install -y awscli tree
+  - apt-get install -y awscli tree jq
   - echo ${rsyslog_conf} | base64 --decode > /etc/rsyslog.conf
   - systemctl restart rsyslog
   - systemctl enable rsyslog
   - sudo bash /var/tmp/configure_nginx.sh 
   - sudo bash /var/tmp/download_terraform_providers.sh 
+  - su -c 'curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=munnep bash' - ubuntu
+  - su -c 'curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=kikitux bash' - ubuntu
 packages_update: true  
