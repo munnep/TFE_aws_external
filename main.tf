@@ -317,7 +317,7 @@ resource "aws_network_interface_sg_attachment" "sg_attachment" {
 }
 
 resource "aws_eip" "tfe-eip" {
-  domain   = "vpc"
+  domain = "vpc"
 
   instance                  = aws_instance.tfe_server.id
   associate_with_private_ip = aws_network_interface.tfe-priv.private_ip
@@ -353,8 +353,22 @@ resource "aws_key_pair" "default-key" {
   public_key = var.public_key
 }
 
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"]
+}
+
+
 resource "aws_instance" "tfe_server" {
-  ami           = var.ami
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.xlarge"
   key_name      = "${var.tag_prefix}-key"
 

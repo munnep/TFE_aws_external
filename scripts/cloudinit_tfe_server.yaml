@@ -79,11 +79,12 @@ write_files:
       apt-get install -y ctop net-tools sysstat jq      
 
       # add public ssh key alvaro
-      curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=kikitux bash
+      su -c 'curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=munnep bash' - ubuntu
       
       # add public ssh key patrick
-      curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=munnep bash
+      su -c 'curl -sL https://raw.githubusercontent.com/kikitux/curl-bash/master/provision/add_github_user_public_keys.sh | GITHUB_USER=kikitux bash' - ubuntu
 
+      # install netdata files      
       curl -sL https://raw.githubusercontent.com/automodule/bash/main/install_netdata.sh | bash
       
       # Set swappiness

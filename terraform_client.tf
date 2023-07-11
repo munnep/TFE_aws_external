@@ -26,7 +26,7 @@ resource "aws_route53_record" "www-client" {
 
 
 resource "aws_eip" "terraform_client-eip" {
-  domain   = "vpc"
+  domain = "vpc"
 
   instance                  = aws_instance.terraform_client.id
   associate_with_private_ip = aws_network_interface.terraform_client-priv.private_ip
@@ -54,7 +54,7 @@ resource "acme_certificate" "certificate-client" {
 
 
 resource "aws_instance" "terraform_client" {
-  ami           = var.ami
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.small"
   key_name      = "${var.tag_prefix}-key"
 
@@ -68,10 +68,10 @@ resource "aws_instance" "terraform_client" {
   user_data = templatefile("${path.module}/scripts/cloudinit_tfe_client.yaml", {
     terraform_client_version = var.terraform_client_version
     rsyslog_conf             = filebase64("${path.module}/files/rsyslog.conf")
-    dns_hostname         = var.dns_hostname
-    dns_zonename         = var.dns_zonename
-    server_cert         = base64encode("${acme_certificate.certificate-client.certificate_pem}${acme_certificate.certificate-client.issuer_pem}")
-    server_key         = base64encode(acme_certificate.certificate-client.private_key_pem)
+    dns_hostname             = var.dns_hostname
+    dns_zonename             = var.dns_zonename
+    server_cert              = base64encode("${acme_certificate.certificate-client.certificate_pem}${acme_certificate.certificate-client.issuer_pem}")
+    server_key               = base64encode(acme_certificate.certificate-client.private_key_pem)
   })
 
   tags = {
@@ -81,7 +81,7 @@ resource "aws_instance" "terraform_client" {
   depends_on = [
     aws_network_interface_sg_attachment.sg2_attachment, acme_certificate.certificate-client
   ]
-  
+
 }
 
 
