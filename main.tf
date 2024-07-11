@@ -100,13 +100,15 @@ resource "aws_security_group" "default-sg" {
     cidr_blocks = ["${local.mypublicip}/32", "0.0.0.0/0"]
   }
 
-  ingress {
-    description = "ssh from private ip"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["${local.mypublicip}/32", "0.0.0.0/0"]
-  }
+  # ingress {
+  #   description = "ssh from private ip"
+  #   from_port   = 22
+  #   to_port     = 22
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["${local.mypublicip}/32", "0.0.0.0/0"]
+  # }
+
+
 
   ingress {
     description = "replicated dashboard from internet"
@@ -120,6 +122,14 @@ resource "aws_security_group" "default-sg" {
     description = "postgresql from internal"
     from_port   = 5432
     to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+
+    ingress {
+    description = "proxy server"
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr]
   }
@@ -185,6 +195,17 @@ resource "aws_s3_object" "object_license" {
 #   bucket = aws_s3_bucket.tfe-bucket.id
 #   acl    = "private"
 # }
+
+
+# fetch the arn of the SecurityComputeAccess policy
+data "aws_iam_policy" "SecurityComputeAccess" {
+  name = "SecurityComputeAccess"
+}
+# add the SecurityComputeAccess policy to IAM role connected to your EC2 instance
+resource "aws_iam_role_policy_attachment" "SSM" {
+  role       = aws_iam_role.role.name
+  policy_arn = data.aws_iam_policy.SecurityComputeAccess.arn
+}
 
 resource "aws_iam_role" "role" {
   name = "${var.tag_prefix}-role"
@@ -266,6 +287,9 @@ resource "acme_registration" "registration" {
 resource "acme_certificate" "certificate" {
   account_key_pem = acme_registration.registration.account_key_pem
   common_name     = "${var.dns_hostname}.${var.dns_zonename}"
+
+  recursive_nameservers        = ["1.1.1.1:53"]
+  disable_complete_propagation = true  
 
   dns_challenge {
     provider = "route53"
@@ -440,11 +464,11 @@ resource "aws_db_subnet_group" "default" {
 resource "aws_db_instance" "default" {
   allocated_storage           = 10
   engine                      = "postgres"
-  engine_version              = "12.11"
+  engine_version              = "15.3"
   instance_class              = "db.t3.large"
   username                    = "postgres"
   password                    = var.rds_password
-  parameter_group_name        = "default.postgres12"
+  parameter_group_name        = "default.postgres15"
   skip_final_snapshot         = true
   db_name                     = "tfe"
   publicly_accessible         = false
