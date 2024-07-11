@@ -74,6 +74,7 @@ dns_zonename             = "bg.hashicorp-success.com"           # DNS zone name 
 tfe_password             = "Password#1"                         # TFE password for the dashboard and encryption of the data
 certificate_email        = "patrick.munne@hashicorp.com"        # Your email address used by TLS certificate registration
 tfe_release_sequence     = ""                                   # Sequence of Terraform enterprise you want to install empty for latest
+terraform_client_version        = "1.1.7"         
 public_key               = "ssh-rsa AAAAB3Nz"                   # The public key for you to connect to the server over SSH
 ```
 - Terraform initialize
